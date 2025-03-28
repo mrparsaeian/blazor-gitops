@@ -1,0 +1,8 @@
+image:
+  repository: ghcr.io/dotnet-presentations/blazor-workshop
+  tag: latest
+
+ingress:
+  enabled: true
+  host: parsaeian.ponya.ir
+  path: /frontend

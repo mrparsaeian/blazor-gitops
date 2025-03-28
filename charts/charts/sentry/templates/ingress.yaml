@@ -1,0 +1,18 @@
+{{- if .Values.sentry.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sentry
+spec:
+  rules:
+    - host: {{ .Values.sentry.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sentry
+                port:
+                  number: 9000
+{{- end }}

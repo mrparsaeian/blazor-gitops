@@ -1,0 +1,44 @@
+stages:
+  - provision
+  - kubespray
+  - deploy
+
+variables:
+  TF_VAR_hcloud_token: $HCLOUD_TOKEN
+  TF_VAR_ssh_key_id: $HCLOUD_SSH_KEY_ID
+
+provision_vps:
+  stage: provision
+  image: hashicorp/terraform:latest
+  script:
+    - cd terraform
+    - terraform init
+    - terraform apply -auto-approve
+    - echo "VPS_IP=$(terraform output -raw vps_ip)" >> ../vps.env
+  artifacts:
+    reports:
+      dotenv: vps.env
+
+install_k8s:
+  stage: kubespray
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh
+  script:
+    - chmod +x scripts/setup-k8s.sh
+    - ./scripts/setup-k8s.sh $VPS_IP
+  artifacts:
+    reports:
+      dotenv: vps.env
+
+deploy_blazor:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh git curl
+    - curl -s https://fluxcd.io/install.sh | bash
+  script:
+    - flux reconcile source git blazor-workshop
+    - flux reconcile helmrelease blazor-frontend
+    - flux reconcile helmrelease blazor-backend
+    - flux reconcile helmrelease sentry

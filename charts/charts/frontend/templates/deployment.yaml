@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blazor-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blazor-frontend
+  template:
+    metadata:
+      labels:
+        app: blazor-frontend
+    spec:
+      containers:
+        - name: blazor-frontend
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: 80

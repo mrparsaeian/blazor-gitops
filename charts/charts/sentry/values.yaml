@@ -1,0 +1,5 @@
+sentry:
+  email: admin@ponya.ir
+  ingress:
+    enabled: true
+    host: sentry.parsaeian.ponya.ir

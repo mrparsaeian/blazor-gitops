@@ -1,0 +1,4 @@
+apiVersion: v2
+name: blazor-backend
+description: Helm chart for Blazor Workshop Backend
+version: 0.1.0

@@ -1,0 +1,12 @@
+frontend:
+  image:
+    tag: latest
+
+backend:
+  image:
+    tag: latest
+
+sentry:
+  email: admin@ponya.ir
+  ingress:
+    host: sentry.parsaeian.ponya.ir
