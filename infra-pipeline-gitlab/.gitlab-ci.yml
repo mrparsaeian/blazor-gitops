@@ -1,0 +1,37 @@
+stages:
+  - provision
+  - kubespray
+
+variables:
+  TF_VAR_hcloud_token: $HCLOUD_TOKEN
+  TF_VAR_ssh_key_id: $HCLOUD_SSH_KEY_ID
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+
+provision_vps:
+  stage: provision
+  image:
+    name: hashicorp/terraform:latest
+    entrypoint: [""]
+  script:
+    - cd terraform
+    - terraform init
+    - terraform apply -auto-approve
+    - echo "VPS_IP=$(terraform output -raw vps_ip)" >> ../vps.env
+  artifacts:
+    reports:
+      dotenv: vps.env
+
+install_k8s:
+  stage: kubespray
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh
+  script:
+    - chmod +x scripts/setup-k8s.sh
+    - ./scripts/setup-k8s.sh $VPS_IP
+  artifacts:
+    reports:
+      dotenv: vps.env
