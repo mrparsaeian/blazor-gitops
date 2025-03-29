@@ -1,4 +1,0 @@
-apiVersion: v2
-name: sentry
-description: Sentry Helm Chart for Error Tracking
-version: 0.1.0
