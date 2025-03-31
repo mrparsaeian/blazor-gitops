@@ -1,0 +1,8 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: blazor-local
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: https://raw.githubusercontent.com/mrparsaeian/blazor-gitops/main/charts

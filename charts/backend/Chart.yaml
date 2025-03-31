@@ -1,4 +1,0 @@
-apiVersion: v2
-name: blazor-backend
-description: Blazor Workshop Backend Chart
-version: 0.1.0
