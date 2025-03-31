@@ -3,11 +3,11 @@ entries:
   blazor-workshop:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-03-31T09:31:08.704861178Z"
+    created: "2025-03-31T09:49:52.283164686Z"
     description: Helm chart for Blazor Workshop application
-    digest: 4121614c9da3a0320bee510022aedd831994d4a89d5aa7fa32e4fdbe7066a227
+    digest: b5329dfaf220eb31d89f39c26e932d95989c8a6e44e17d9722b5181df31369bc
     name: blazor-workshop
     urls:
     - https://mrparsaeian.github.io/blazor-gitops/blazor-workshop-0.1.0.tgz
     version: 0.1.0
-generated: "2025-03-31T09:31:08.704485773Z"
+generated: "2025-03-31T09:49:52.282735026Z"
