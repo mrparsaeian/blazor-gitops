@@ -1,0 +1,41 @@
+stages:
+  - package
+  - publish
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  CHART_NAME: blazor-workshop
+  CHART_VERSION: 0.1.0
+
+package_chart:
+  stage: package
+  image: alpine/helm:3.14.0
+  script:
+    - mkdir -p charts
+    - helm dependency update blazor-workshop-chart || true
+    - helm package blazor-workshop-chart --version $CHART_VERSION --destination charts
+  artifacts:
+    paths:
+      - charts/*.tgz
+
+publish_chart:
+  stage: publish
+  image: alpine:latest
+  dependencies:
+    - package_chart
+  before_script:
+    - apk add --no-cache git openssh
+    - mkdir -p ~/.ssh
+    - echo "$GITHUB_DEPLOY_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan github.com >> ~/.ssh/known_hosts
+  script:
+    - git config --global user.name "GitLab CI"
+    - git config --global user.email "ci@blazor-gitops"
+    - git clone --branch gh-pages git@github.com:mrparsaeian/blazor-gitops.git gh-pages
+    - cp charts/*.tgz gh-pages/
+    - cd gh-pages
+    - helm repo index . --url https://mrparsaeian.github.io/blazor-gitops
+    - git add .
+    - git commit -m "Publish Helm chart $CHART_VERSION"
+    - git push origin gh-pages

@@ -1,9 +1,0 @@
-# Ignore Helm chart build files
-*.tgz
-charts/*.tgz
-values-production.yaml.backup
-
-# Ignore temp files
-*.log
-*.tmp
-.DS_Store
